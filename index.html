@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html class="no-js">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
@@ -31,13 +25,7 @@
 
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-        <!-- Add your site or application content here -->
-        
+    <body>        
         <div id="header">
             <h1>NYC<sup>*</sup><span>kWh</span></h1>
             <h3>Building energy use in America's largest city.</h3>
@@ -50,18 +38,8 @@
             	</div>
             </div>
         </div>
-        <!-- <div id="nav-main">
-            <ul>
-                <li id="nav-main-1" class="nav-option"><a><h4>city</h4></a></li>
-                <li id="nav-main-2" class="nav-option"><a><h4>borough</h4></a></li>
-                <li id="nav-main-3" class="nav-option"><a><h4>neighborhood</h4></a></li>
-                <li id="nav-main-4" class="nav-option"><a><h4>building</h4></a></li>
-            </ul>
-        </div>   -->
 
-        <div id="map">
-            <!-- <div id="menu-head"><a><h4>menu</h4></a></div> -->
-            
+        <div id="map">            
             <div id='legend' class='choropleth desaturate'>	
 				<ul>
 					<li class="min">low</li>
@@ -76,12 +54,6 @@
 				</ul>
 	          	<div id="colorbar-grey"></div>
 			</div>
-
-			<!-- <div id="menu-arrow-bar">
-                <img id="menu-arrow" class="rotated" src="img/arrow2_white.svg" height="18px" width="18px" />
-                <img id="menu-search" src="img/search_white.svg" height="18px" width="18px" />
-                <img id="menu-info" src="img/info_white.svg" height="18px" width="18px" />
-            </div> -->
 	            	
             <div id="menu-panel">
                 
@@ -90,9 +62,6 @@
 	                    <form>
 	                        <input class="search" type="search" value="Search for a building" onfocus="if(this.value=='Search')this.value='';" onblur="if(this.value=='')this.value='Search';" disabled />
 	                    </form>
-	                    <!-- <div id="search-results" >
-	                		
-	                	</div> -->
 	                </div>
 
 	                <div id='filter-menu' class="map-view">
@@ -104,18 +73,8 @@
 	                      	</form> 
 	                        <form>
 	                            <input id="maxarea" class="min-max" type="text" value="Max" min="0" max="15000000" onfocus="if(this.value=='Max')this.value='';" onblur="if(this.value=='')this.value='Max';" />                            
-	                        </form>    
-	                        <!-- <a id="all" class="button"><h5>all buildings</h5></a> 
-	                        <a id="less" class="button"><h5><= 100,000 sf</h5></a> 
-	                        <a id="greater" class="button"><h5>> 100,000 sf</h5></a>
-	                        <a id="nosfdata" class="button"><h5>no floor area data</h5></a>   -->               
+	                        </form>               
 	                    </div>
-	                    <!-- <h5 class="filter-option">style</h5>
-	                    <div class="style">
-	                        <a id="ghg" class="button"><h5>ghg emissions</h5></a> 
-	                        <a id="eui" class="button"><h5>energy use intensity</h5></a>
-	                        <a id="noghgeuidata" class="button"><h5>no ghg/eui data</h5></a>
-	                    </div> -->
 	                    <h5 class="filter-option">building type</h5>
 	                    <div class="building-type">
 	                        <a id="multifamily" class="button"><h5>multifamily housing</h5></a>
@@ -130,54 +89,19 @@
 	                        <img id="queens" class="button 4" src="img/qn_transp.png" height="45px" />
 	                        <img id="bronx" class="button 2" src="img/bx_transp.png" height="45px" />
 	                        <img id="statenisland" class="button 5" src="img/si_transp.png" height="45px" />
-
-	                        <!-- <a id="manhattan" class="button"><h5>manhattan</h5></a>
-	                        <a id="brooklyn" class="button"><h5>brooklyn</h5></a> 
-	                        <a id="queens" class="button"><h5>queens</h5></a>
-	                        <a id="bronx" class="button"><h5>bronx</h5></a>
-	                        <a id="statenisland" class="button"><h5>staten island</h5></a> -->
 	                    </div>
 	                    <h5 id="clearfilters" class="button filter-option">clear filters</h5>
 	                </div>
 	                <div id='color-menu' class="map-view">
 	                    <h5 class="filter-head">color buildings by:</h5>
 	                    <h5 id="eui" class="button color-option">energy use intensity</h5>
-	                    <!-- <div class="floor-area">
-	                        <form>
-	                            <input class="min-max" type="text" value="Min" onfocus="if(this.value=='Min')this.value='';" onblur="if(this.value=='')this.value='Min';" />                            
-	                        </form> 
-	                        <form>
-	                            <input class="min-max" type="text" value="Max" onfocus="if(this.value=='Max')this.value='';" onblur="if(this.value=='')this.value='Max';" />                            
-	                        </form>   -->  
-	                        <!-- <a id="all" class="button"><h5>all buildings</h5></a> 
-	                        <a id="less" class="button"><h5><= 100,000 sf</h5></a> 
-	                        <a id="greater" class="button"><h5>> 100,000 sf</h5></a>
-	                        <a id="nosfdata" class="button"><h5>no floor area data</h5></a>   -->               
-	                    <!-- </div> -->
-	                    <h5 id="ghg" class="button color-option">greenhouse gas emissions</h5>
-	                    <!-- <div class="style">
-	                        <a id="ghg" class="button"><h5>ghg emissions</h5></a> 
-	                        <a id="eui" class="button"><h5>energy use intensity</h5></a>
-	                        <a id="noghgeuidata" class="button"><h5>no ghg/eui data</h5></a>
-	                    </div>
-	                    <h5 class="filter-option">building type</h5>
-	                    <div class="building-type">
-	                        <a id="multifamily" class="button"><h5>multifamily housing</h5></a> 
-	                        <a id="office" class="button"><h5>office</h5></a> 
-	                        <a id="other" class="button"><h5>other</h5></a>
-	                        <a id="notypedata" class="button"><h5>no data</h5></a>
-	                    </div> -->
+          	            <h5 id="ghg" class="button color-option">greenhouse gas emissions</h5>
 	                    <h5 id="clearcolors" class="button">clear colors</h5>
 	                </div>
 	            </div>    	
                
 				<div id="bldg-data" class="hidden">
-		            <table class="table">
-		                <!-- <thead>
-		                    <tr>
-		                        <th></th>
-		                    </tr>  
-		                </thead> -->  
+		            <table class="table"> 
 		                <tbody>
 		                	<h3>choose a building</h3>
 		                    <tr>
@@ -214,21 +138,9 @@
 		            </table>
 		        <img id="streetview" width="350px" height="262px">		            
 		        </div>
-
-                <!-- <div id="bldg-data" class="hidden">
-		            <h3>CHOOSE A BUILDING</h3>
-		            <h4>total floor area (ft<sup>2</sup>): &nbsp;<span class="floor-area-data"></span></h4>
-		            <h4>building height (ft): &nbsp;<span class="bldg-height"></span></h4>
-		            <h4>source eui (kbtu/ft<sup>2</sup>): &nbsp;<span class="eui"></span></h4>
-		            <h4>ghg emissions (mtco<sup>2</sup>e): &nbsp;<span class="ghg"></span></h4>
-		            <h4>energy star rating (1-100): &nbsp;<span class="energy-star"></span></h4>
-		            <img id="streetview" width="330px" height="248px"> -->
-            		<!-- <h4 class="min">min:</h4>
-         		    <h4 class="max">max:</h4>  -->           
-        		<!-- </div>  
-
+ 
             </div>                    
-        </div>  -->
+        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
