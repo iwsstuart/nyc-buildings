@@ -1,160 +1,365 @@
-<html class="no-js">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lesson 1 | CartoDB.js | CartoDB</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-        <style>
-          html, body {
-            height: 100%;
-            padding: 0;
-            margin: 0;
-          }
-        </style>
+    <!-- Bootstrap -->    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
-        <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+    <!-- CartoDB and Mapbox stylesheets -->    
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+		<link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
 
-        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.13.1/mapbox-gl.js'></script>
-    	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.13.1/mapbox-gl.css' rel='stylesheet' />
+    <!-- Typekit kit -->    
+    <script src="https://use.typekit.net/bwy0xzf.js"></script>
+		<script>try{Typekit.load({ async: true });}catch(e){}</script>
 
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-    </head>
-    <body>        
-        <div id="header">
-            <h1>NYC<sup>*</sup><span>kWh</span></h1>
-            <h3>Building energy use in America's largest city.</h3>
-            <div id="nav">
-            	<div class="nav-toggle">
-            		<img id="menu-search" src="img/filter_grey.svg" height="18px" width="18px" />
-            	</div>
-            	<div class="nav-toggle">
-            		<img id="menu-info" src="img/details_grey.svg" height="18px" width="18px" />
-            	</div>
-            </div>
-        </div>
+    <!-- Fontawesome for additional glyphicons -->    
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-        <div id="map">            
-            <div id='legend' class='choropleth desaturate'>	
-				<ul>
-					<li class="min">low</li>
-					<li class="quartile" style="background-color:#F1EEF6"></li>
-					<li class="quartile" style="background-color:#D4B9DA"></li>
-					<li class="quartile" style="background-color:#C994C7"></li>
-					<li class="quartile" style="background-color:#DF65B0"></li>
-					<li class="quartile" style="background-color:#E7298A"></li>
-					<li class="quartile" style="background-color:#CE1256"></li>
-					<li class="quartile" style="background-color:#91003F"></li>
-					<li class="max">high</li>
-				</ul>
-	          	<div id="colorbar-grey"></div>
-			</div>
-	            	
-            <div id="menu-panel">
-                
-                <div id="filters">
-	                <div id="search">
-	                    <form>
-	                        <input class="search" type="search" value="Search for a building" onfocus="if(this.value=='Search')this.value='';" onblur="if(this.value=='')this.value='Search';" disabled />
-	                    </form>
-	                </div>
+    <!-- Map takes up full browser window -->
+    <style>
+	    html, body, div, span, applet, object, iframe,
+			h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+			a, abbr, acronym, address, big, cite, code,
+			del, dfn, em, font, img, input, ins, kbd, q, s, samp,
+			small, strike, strong, sub, sup, tt, var,
+			b, u, i, center,
+			dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend,
+			table, caption, tbody, tfoot, thead, tr, th, td {
+			    margin: 0;
+			    padding: 0;
+			    font-weight: normal;
+			    text-decoration:none;
+			    color:inherit;
+			    list-style: none;
+			    -webkit-font-smoothing: antialiased;
+			    -moz-osx-font-smoothing: grayscale;
+			}
 
-	                <div id='filter-menu' class="map-view">
-	                    <h5 class="filter-head">filter buildings by:</h5>
-	                    <h5 class="filter-option">floor area</h5>
-	                    <div class="floor-area">
-	                        <form>
-	                            <input id="minarea" class="min-max" type="text" value="Min" min="0" max="15000000" onfocus="if(this.value=='Min')this.value='';" onblur="if(this.value=='')this.value='Min';" disabled />                            
-	                      	</form> 
-	                        <form>
-	                            <input id="maxarea" class="min-max" type="text" value="Max" min="0" max="15000000" onfocus="if(this.value=='Max')this.value='';" onblur="if(this.value=='')this.value='Max';" />                            
-	                        </form>               
-	                    </div>
-	                    <h5 class="filter-option">building type</h5>
-	                    <div class="building-type">
-	                        <a id="multifamily" class="button"><h5>multifamily housing</h5></a>
-	                        <a id="office" class="button"><h5>office</h5></a> 
-	                        <a id="other" class="button"><h5>other</h5></a>
-	                        <a id="notypedata" class="button"><h5>no data</h5></a>
-	                    </div>
-	                    <h5 class="filter-option">borough</h5>
-	                    <div class="borough">
-	                        <img id="manhattan" class="button 1" src="img/mn_transp.png" height="45px" />
-	              	        <img id="brooklyn" class="button 3" src="img/bk_transp.png" height="45px" />
-	                        <img id="queens" class="button 4" src="img/qn_transp.png" height="45px" />
-	                        <img id="bronx" class="button 2" src="img/bx_transp.png" height="45px" />
-	                        <img id="statenisland" class="button 5" src="img/si_transp.png" height="45px" />
-	                    </div>
-	                    <h5 id="clearfilters" class="button filter-option">clear filters</h5>
-	                </div>
-	                <div id='color-menu' class="map-view">
-	                    <h5 class="filter-head">color buildings by:</h5>
-	                    <h5 id="eui" class="button color-option">energy use intensity</h5>
-          	            <h5 id="ghg" class="button color-option">greenhouse gas emissions</h5>
-	                    <h5 id="clearcolors" class="button">clear colors</h5>
-	                </div>
-	            </div>    	
-               
-				<div id="bldg-data" class="hidden">
-		            <table class="table"> 
-		                <tbody>
-		                	<h3>choose a building</h3>
-		                    <tr>
-		                        <td class="left"><h4>total floor area</h4></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="value floor-area-data"><h2>--</h2><h5 class="inline">ft<sup>2</sup></h5></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="left"><h4>building height</h4></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="value bldg-height"><h2>--</h2><h5 class="inline">ft</h5></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="left"><h4>source eui</h4></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="value eui"><h2>--</h2><h5 class="inline">kBtu/ft<sup>2</sup></h5></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="left"><h4>ghg emissions</h4></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="value ghg"><h2>--</h2><h5 class="inline">mtCO<sup>2</sup>e</h5></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="left"><h4>energy star rating (1-100)</h4></td>
-		                    </tr>
-		                    <tr>
-		                        <td class="value energy-star"><h2>--</h2></td>
-		                    </tr>
-		                </tbody>   
-		            </table>
-		        <img id="streetview" width="350px" height="262px">		            
-		        </div>
- 
-            </div>                    
-        </div>
+			* {
+		    -webkit-border-radius: 0 !important;
+     	    -moz-border-radius: 0 !important;
+		    border-radius: 0 !important;
+			}
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+      body { height: 100%; }
+        
+      h5 {
+				font-family: "proxima-nova";
+        font-weight: 500; 
+        letter-spacing: 1px;
+      }
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
-    </body>
+      h6 {
+				font-family: "proxima-nova";
+        font-weight: 400; 
+        letter-spacing: 1px;
+        display: inline;
+      }             
+      
+      #map { 
+      	position:absolute; 
+      	top:0; 
+      	bottom:0; 
+      	width:100%; 
+      }
+
+      .panel { 
+        	box-shadow: 0 0 5px rgba(255,255,255,0.5);
+        	border: none;
+        	background-color: black;
+			}
+
+      .panel-default { 
+      	position:absolute; 
+      	left: 0;
+      	width:240px;
+      	height: 100%;
+      	overflow: scroll;
+      	z-index: 100;
+      	color: #ccc;
+      	background-color: 'red';
+      	margin-bottom: 0;
+      }
+      .panel-default > .panel-heading { 
+      	background-color: #2a2a2a;
+      	border-color: #666;
+      }
+      .panel-heading {
+      	padding: 15px;
+      }
+      .panel-heading h4 { 
+      	font-family: "clarendon-urw-extra-narrow"; 
+      	font-weight: 700;
+      	color: white; 
+      }
+      .panel-body { 
+      	padding-left: 0; 
+      	padding-right: 0; 
+      }
+
+			.list-group { 
+				margin-bottom: -1px; 
+			}
+			.list-group-item { 
+				background-color: #444; 
+				border-color: #666; 
+			}
+			.list-group-item.header {
+				padding: 12px 15px;
+			}
+	    .list-group-item.layer {
+				background-color: #333;
+				border-color: #444;
+				padding: 12px 15px;
+				line-height: 0px;
+			}
+	    .list-group-item.layer .fa {
+	    	font-size: .6em;
+	    	margin-right: 5px;
+	    	line-height: 10px;
+	    }
+      .list-group-item:hover { 
+      	background-color: #666; 
+      	cursor: pointer; 
+      }
+    </style>
+
+    <style type="cartocss/html" id="eui-quantiles">
+			/** choropleth visualization */
+
+			#building_0814_energy_3857{
+			  polygon-fill: #0080ff;
+			  polygon-opacity: 0.8;
+			  line-color: #FFF;
+			  line-width: 0;
+			  line-opacity: 1;
+			}
+			#building_0814_energy_3857 [ source_eui <= 576072] {
+			   polygon-fill: #ff4d4d;
+			}
+			#building_0814_energy_3857 [ source_eui <= 348.8] {
+			   polygon-fill: #ff7a7a;
+			}
+			#building_0814_energy_3857 [ source_eui <= 244.6] {
+			   polygon-fill: #ffa6a6;
+			}
+			#building_0814_energy_3857 [ source_eui <= 190.5] {
+			   polygon-fill: #fff2cc;
+			}
+			#building_0814_energy_3857 [ source_eui <= 146.8] {
+			   polygon-fill: #7fbfff;
+			}
+			#building_0814_energy_3857 [ source_eui <= 103.9] {
+			   polygon-fill: #40a0ff;
+			}
+			#building_0814_energy_3857 [ source_eui <= 59.3] {
+			   polygon-fill: #0080ff;
+			}
+    </style>
+
+    <style type="cartocss/html" id="ghg-quantiles">
+			/** choropleth visualization */
+
+			#building_0814_energy_3857{
+			  polygon-fill: #0080ff;
+			  polygon-opacity: 0.8;
+			  line-color: #FFF;
+			  line-width: 0;
+			  line-opacity: 1;
+			}
+			#building_0814_energy_3857 [ total_ghg <= 22449200] {
+			   polygon-fill: #ff4d4d;
+			}
+			#building_0814_energy_3857 [ total_ghg <= 1655.09] {
+			   polygon-fill: #ff7a7a;
+			}
+			#building_0814_energy_3857 [ total_ghg <= 872.95] {
+			   polygon-fill: #ffa6a6;
+			}
+			#building_0814_energy_3857 [ total_ghg <= 606.18] {
+			   polygon-fill: #fff2cc;
+			}
+			#building_0814_energy_3857 [ total_ghg <= 461.54] {
+			   polygon-fill: #7fbfff;
+			}
+			#building_0814_energy_3857 [ total_ghg <= 357.37] {
+			   polygon-fill: #40a0ff;
+			}
+			#building_0814_energy_3857 [ total_ghg <= 246.04] {
+			   polygon-fill: #0080ff;
+			}
+    </style>
+
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div class="test"></div>
+    <div class="panel panel-default">
+
+			<!-- Default panel contents -->
+			<div class="panel-heading"><h4>NYC*kWh</h4></div>
+			<ul class="list-group">
+			    <li class="list-group-item header"><h5>BUILDING TYPE</h5></li>	
+			    <ul class="list-group items">
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MULTIFAMILY HOUSING</h6></li>	
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OFFICE</h6></li>
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OTHER</h6></li>
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>NO DATA</h6></li>
+			    </ul>
+			    <li class="list-group-item header"><h5>BOROUGH</h5></li>	
+			    <ul class="list-group items">
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MANHATTAN</h6></li>	
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BROOKLYN</h6></li>
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>QUEENS</h6></li>
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BRONX</h6></li>
+				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>STATEN ISLAND</h6></li>
+			    </ul>
+			    <li class="list-group-item header"><h5>COLORS</h5></li>	
+			    <ul class="list-group items">			    
+			    	<li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>ENERGY USE INTENSITY</h6></li>	
+			    	<li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>TOTAL GHG EMISSIONS</h6></li>
+			    </ul>				
+			</ul>
+
+		</div>
+
+    <!-- include mapbox.js standalone (with Leaflet) -->
+		<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+    
+    <!-- include cartodb.js library (without Leaflet - there is a conflict when it is loaded twice) -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb_noleaflet.js"></script>
+
+    
+    <!-- Drop your code between the script tags below! -->
+    <script>
+    window.onload = function() {
+	  
+    // -------------------------------
+    // Map object with 'createLayer' method, using Mapbox basemap
+
+    L.mapbox.accessToken = 'pk.eyJ1IjoiaXdzc3R1YXJ0IiwiYSI6InNaNzMzVXMifQ.OFDL1zM5OjRUHcL_Y5htCA';
+  
+    // Choose center and zoom level
+	  var options = {
+	    center: [40.75, -73.94], // NYC
+	    zoom: 11,
+	    zoomControl: false
+	  }
+
+	  // Instantiate map object on specified DOM element
+	  var map_object = new L.mapbox.map('map', 'mapbox.dark', options);
+
+	  // Set new zoomControl position
+		new L.Control.Zoom({ position: 'topright' }).addTo(map_object);
+
+		// Add data layers using viz.json object and 'createLayer'
+		var vizjson = 'https://iwsstuart.cartodb.com/api/v2/viz/3ba4fb98-3787-11e4-8355-0e10bcd91c2b/viz.json';
+	  cartodb.createLayer(map_object, vizjson).addTo(map_object) 
+		  .on('done', function(layer) {
+	      //do stuff
+	    })
+	    .on('error', function(err) {
+	      alert("Error: " + err);
+	    }); 
+
+
+	  // --------------------------------
+    // 'createVis' method - no map object required
+
+    /*var options = {
+			center: [40.75, -73.94],
+			zoom: 11,
+			scrollwheel: true
+		};
+		
+		var vizjson = 'https://iwsstuart.cartodb.com/api/v2/viz/3ba4fb98-3787-11e4-8355-0e10bcd91c2b/viz.json';
+	  cartodb.createVis('map', vizjson, options);*/
+	
+
+	  // --------------------------------	
+	  // One way to introduce interactive styling
+
+		var bldgLayerActions = {
+
+		  ghg: function(){
+		    sublayers[0].set({
+		    	cartocss: "#building_0814_energy_3857 [ total_ghg <= 9383283.01] { polygon-fill: #91003F; }\
+							#building_0814_energy_3857 [ total_ghg <= 2334.88] { polygon-fill: #CE1256; }\
+							#building_0814_energy_3857 [ total_ghg <= 1240.7] { polygon-fill: #E7298A; }\
+							#building_0814_energy_3857 [ total_ghg <= 808.62] { polygon-fill: #DF65B0; }\
+							#building_0814_energy_3857 [ total_ghg <= 587.96] { polygon-fill: #C994C7; }\
+							#building_0814_energy_3857 [ total_ghg <= 444.26] { polygon-fill: #D4B9DA; }\
+							#building_0814_energy_3857 [ total_ghg <= 318.97] { polygon-fill: #F1EEF6; }"
+		    });
+		    return true;
+		  },
+		  eui: function(){
+		  	console.log(boroughFilter);
+		  	console.log(currentBorough);
+		    sublayers[0].set({
+		    	cartocss: "#building_0814_energy_3857 [ source_eui <= 576072] { polygon-fill: #91003F; }\
+							#building_0814_energy_3857 [ source_eui <= 303.5] { polygon-fill: #CE1256; }\
+							#building_0814_energy_3857 [ source_eui <= 227.7] { polygon-fill: #E7298A; }\
+							#building_0814_energy_3857 [ source_eui <= 183.8] { polygon-fill: #DF65B0; }\
+							#building_0814_energy_3857 [ source_eui <= 148.4] { polygon-fill: #C994C7; }\
+							#building_0814_energy_3857 [ source_eui <= 115.4] { polygon-fill: #D4B9DA; }\
+							#building_0814_energy_3857 [ source_eui <= 80.7] { polygon-fill: #F1EEF6; }"
+		    });
+		    return true;
+		  }
+		
+		}
+
+		$('.button').click( function() {
+		  $('.button').removeClass('selected');
+		  $(this).addClass('selected');
+		  bldgLayerActions[$(this).attr('id')]();
+		});
+
+	
+		// --------------------------------
+      
+    // fetch the geometry
+    
+    // var polygons = {};
+
+    // var sql = new cartodb.SQL({ user: 'iwsstuart', format: 'geojson' });
+    // sql.execute("select cartodb_id, the_geom from building_0814_energy_3857").done(function(data) {
+    //   var features = data.features;
+    //   for(var i = 0; i < features.length; ++i) {
+    //     var f = geojson.features[i];
+    //     var key = f.properties.cartodb_id
+
+    //     // generate geometry
+    //     var geo = L.GeoJSON.geometryToLayer(features[i].geometry);
+    //     geo.setStyle(style);
+
+    //     // add to polygons
+    //     polygons[key] = polygons[key] ||  [];
+    //     polygons[key].push(geo);
+
+    //   }
+    // });
+
+		}
+    </script>
+
+  </body>
 </html>
