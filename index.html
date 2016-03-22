@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lesson 1 | CartoDB.js | CartoDB</title>
+    <title>NYC*kWh</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
@@ -59,10 +59,18 @@
 
       body { height: 100%; }
         
+			h4 { 
+      	font-family: "clarendon-urw-extra-narrow"; 
+      	font-weight: 900;
+      	letter-spacing: 1px;
+      	color: white; 
+      }
+
       h5 {
 				font-family: "proxima-nova";
         font-weight: 500; 
         letter-spacing: 1px;
+        font-size: 0.9em;
       }
 
       h6 {
@@ -70,6 +78,7 @@
         font-weight: 400; 
         letter-spacing: 1px;
         display: inline;
+        font-size: 0.8em;
       }             
       
       #map { 
@@ -101,12 +110,7 @@
       	border-color: #666;
       }
       .panel-heading {
-      	padding: 15px;
-      }
-      .panel-heading h4 { 
-      	font-family: "clarendon-urw-extra-narrow"; 
-      	font-weight: 700;
-      	color: white; 
+      	padding: 12px 15px;
       }
       .panel-body { 
       	padding-left: 0; 
@@ -118,26 +122,57 @@
 			}
 			.list-group-item { 
 				background-color: #444; 
-				border-color: #666; 
+				border-color: #666;
 			}
 			.list-group-item.header {
-				padding: 12px 15px;
+				padding: 9px 15px;
 			}
 	    .list-group-item.layer {
 				background-color: #333;
 				border-color: #444;
-				padding: 12px 15px;
+				padding: 10px 15px;
 				line-height: 0px;
 			}
 	    .list-group-item.layer .fa {
-	    	font-size: .6em;
+	    	font-size: .5em;
 	    	margin-right: 5px;
-	    	line-height: 10px;
 	    }
-      .list-group-item:hover { 
+      .list-group-item.layer:hover { 
       	background-color: #666; 
       	cursor: pointer; 
       }
+
+      .list-group-item.active { 
+      	color: white;
+      }
+      .list-group-item.active:hover { 
+				border-color: #666;
+      }
+
+      .modal.building-details {
+      	position: absolute;
+      	left: 20%;
+      	top: 30px;
+      }
+
+      .modal-content {
+      	background-color: rgba(0,0,0,0.7);
+      	box-shadow: 0 0 5px rgba(255,255,255,0.5);
+      	height: 400px;
+      	width: 600px;
+      }
+
+      .modal-header, .modal-body {
+      	border: none;
+      	box-shadow: none;
+      }
+
+      .mapbox-logo{
+    		display: none !important;
+			}
+			.cartodb-logo{
+    		display: none !important;
+			}
     </style>
 
     <style type="cartocss/html" id="eui-quantiles">
@@ -208,7 +243,7 @@
 
   </head>
   <body>
-    <div id="map"></div>
+    <div id="map" data-toggle="modal" data-target=".building-details"></div>
 
     <div class="test"></div>
     <div class="panel panel-default">
@@ -217,11 +252,11 @@
 			<div class="panel-heading"><h4>NYC*kWh</h4></div>
 			<ul class="list-group">
 			    <li class="list-group-item header"><h5>BUILDING TYPE</h5></li>	
-			    <ul class="list-group items">
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MULTIFAMILY HOUSING</h6></li>	
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OFFICE</h6></li>
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OTHER</h6></li>
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>NO DATA</h6></li>
+			    <ul class="list-group items type">
+				    <li id="#" class="list-group-item layer multifamily"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MULTIFAMILY HOUSING</h6></li>	
+				    <li id="#" class="list-group-item layer office"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OFFICE</h6></li>
+				    <li id="#" class="list-group-item layer other"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OTHER</h6></li>
+				    <li id="#" class="list-group-item layer nodata"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>NO DATA</h6></li>
 			    </ul>
 			    <li class="list-group-item header"><h5>BOROUGH</h5></li>	
 			    <ul class="list-group items">
@@ -232,27 +267,44 @@
 				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>STATEN ISLAND</h6></li>
 			    </ul>
 			    <li class="list-group-item header"><h5>COLORS</h5></li>	
-			    <ul class="list-group items">			    
-			    	<li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>ENERGY USE INTENSITY</h6></li>	
-			    	<li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>TOTAL GHG EMISSIONS</h6></li>
+			    <ul class="list-group items colors">			    
+			    	<li id="eui-quantiles" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>ENERGY USE INTENSITY</h6></li>	
+			    	<li id="ghg-quantiles" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>TOTAL GHG EMISSIONS</h6></li>
 			    </ul>				
 			</ul>
 
 		</div>
 
-    <!-- include mapbox.js standalone (with Leaflet) -->
-		<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
-    
-    <!-- include cartodb.js library (without Leaflet - there is a conflict when it is loaded twice) -->
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb_noleaflet.js"></script>
+		<div class="modal building-details" tabindex="-1" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel"></h4>
+		      </div>		      
+		      <div class="modal-body">
+		        <p>One fine body&hellip;</p>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 
+
+
+
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+    <!-- include mapbox.js standalone (no Leaflet - there is a conflict when it is loaded twice) -->
+		<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.standalone.js'></script>
     
     <!-- Drop your code between the script tags below! -->
     <script>
     window.onload = function() {
 	  
-    // -------------------------------
-    // Map object with 'createLayer' method, using Mapbox basemap
+
+// -------------------------------
+// Map object with 'createLayer' method, using Mapbox basemap
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiaXdzc3R1YXJ0IiwiYSI6InNaNzMzVXMifQ.OFDL1zM5OjRUHcL_Y5htCA';
   
@@ -269,32 +321,171 @@
 	  // Set new zoomControl position
 		new L.Control.Zoom({ position: 'topright' }).addTo(map_object);
 
-		// Add data layers using viz.json object and 'createLayer'
+		var sublayers = [];
+
+
+// ----------------------------------------
+// Code from original site ( via Javi Santana - http://bl.ocks.org/javisantana/8313604 )
+// Highlight buildings on hover
+
+    var polygons = {};
+
+	  function geometryHover(map, layer) {
+
+      options = options || {}
+      var HIGHLIGHT_STYLE = {
+        weight: 3,
+        color: '#FFFFFF',
+        opacity: 1,
+        fillColor: '#FFFFFF',
+        fillOpacity: 0.3
+      };
+      style = options.style || HIGHLIGHT_STYLE;
+      var polygonsHighlighted = [];
+
+    	// fetch the geometry	
+	    var sql = new cartodb.SQL({ user: 'iwsstuart', format: 'geojson' });
+			// sql.execute("select cartodb_id, the_geom from building_0814_energy_3857").done(function(data) {	 
+	  //     var features = data.features;
+
+			// 	for(var i = 0; i < features.length; ++i) {
+	  //       var f = data.features[i];
+	  //       var key = f.properties.cartodb_id
+
+	  //       // generate geometry
+	  //       var geo = L.GeoJSON.geometryToLayer(features[i].geometry);
+	  //       geo.setStyle(style);
+
+	  //       // add to polygons
+	  //       polygons[key] = polygons[key] ||  [];
+	  //       polygons[key].push(geo);
+	  //     }
+	  //   });
+
+      function featureOver(e, pos, latlng, data) {
+        featureOut();
+        var pol = polygons[data.cartodb_id] || [];
+        for(var i = 0; i < pol.length; ++i) {
+          map.addLayer(pol[i]);
+          polygonsHighlighted.push(pol[i]);
+        }
+      }
+
+      function featureOut() {
+        var pol = polygonsHighlighted;
+        for(var i = 0; i < pol.length; ++i) {
+          map.removeLayer(pol[i]);
+        }
+        polygonsHighlighted = [];
+      }
+
+      layer.on('featureOver', featureOver);
+      layer.on('featureOut', featureOut);
+      layer.setInteraction(true);	  	
+	  }
+
+
+// --------------------------------		
+// Add data layers using viz.json object and 'createLayer'
+		
 		var vizjson = 'https://iwsstuart.cartodb.com/api/v2/viz/3ba4fb98-3787-11e4-8355-0e10bcd91c2b/viz.json';
 	  cartodb.createLayer(map_object, vizjson).addTo(map_object) 
 		  .on('done', function(layer) {
-	      //do stuff
+	      
+	      // Add buildings layer to sublayers array
+	      var sublayer = layer.getSubLayer(0);
+	      sublayers.push(sublayer);
+
+	      geometryHover(map_object, layer.getSubLayer(0));
+
 	    })
 	    .on('error', function(err) {
 	      alert("Error: " + err);
 	    }); 
 
 
-	  // --------------------------------
-    // 'createVis' method - no map object required
+	  // Set color scheme for buildings layer from control panel  
+  	$('.colors .list-group-item').click( function() {
+		  var colorScheme = $(this).attr('id');
+		  sublayers[0].set({
+		  	cartocss: $('#' + colorScheme).html()
+		  });  
+		});
 
-    /*var options = {
-			center: [40.75, -73.94],
-			zoom: 11,
-			scrollwheel: true
-		};
-		
-		var vizjson = 'https://iwsstuart.cartodb.com/api/v2/viz/3ba4fb98-3787-11e4-8355-0e10bcd91c2b/viz.json';
-	  cartodb.createVis('map', vizjson, options);*/
+		// Toggle circle on and off
+		$('.list-group-item').click( function() {
+			$(this).parent().children('.active')
+				.removeClass('active')
+				.children('span')
+					.toggleClass('fa-circle-thin')
+					.toggleClass('fa-circle');
+			$(this).addClass('active');
+			$(this).children('span')
+				.toggleClass('fa-circle-thin')
+				.toggleClass('fa-circle');
+		});
+
+
+	  // Filter buildings displayed by type
+
+  	$('.type .multifamily').click( function() {
+		  // var colorScheme = $(this).attr('id');
+		  sublayers[0].set({
+		  	sql: "select * from building_0814_energy_3857 where property_t = 'Multifamily Housing'"
+		  });  
+		});
+
+		$('.type .office').click( function() {
+		  // var colorScheme = $(this).attr('id');
+		  sublayers[0].set({
+		  	sql: "select * from building_0814_energy_3857 where property_t = 'Office'"
+		  });  
+		});
+
+		$('.type .other').click( function() {
+		  // var colorScheme = $(this).attr('id');
+		  sublayers[0].set({
+		  	sql: "select * from building_0814_energy_3857 where property_t = 'Other'"
+		  });  
+		});
+
+	 	$('.type .nodata').click( function() {
+		  // var colorScheme = $(this).attr('id');
+		  sublayers[0].set({
+		  	sql: "select * from building_0814_energy_3857 where property_t is null"
+		  });  
+		});
+
+
+	 	$('.type .nodata').click( function() {
+		  // var colorScheme = $(this).attr('id');
+		  sublayers[0].set({
+		  	sql: "select * from building_0814_energy_3857 where property_t is null"
+		  });  
+		});
+
+
+
+// -------------------------------
+// Custom legend
+    
+    // var legend = new cdb.geo.ui.Legend({
+    //   type: "choropleth",
+    //   data: [
+    //     { value: "10" },
+    //     { value: "20" },
+    //     { name: "color1", value: "#F00" },
+    //     { name: "color2", value: "#0F0" },
+    //     { name: "color3", value: "#00F" }
+    //   ]
+    // });
+
+    // $('#map').append(legend.render().el);
+
 	
 
-	  // --------------------------------	
-	  // One way to introduce interactive styling
+// --------------------------------	
+// One way to introduce interactive styling
 
 		var bldgLayerActions = {
 
@@ -311,8 +502,6 @@
 		    return true;
 		  },
 		  eui: function(){
-		  	console.log(boroughFilter);
-		  	console.log(currentBorough);
 		    sublayers[0].set({
 		    	cartocss: "#building_0814_energy_3857 [ source_eui <= 576072] { polygon-fill: #91003F; }\
 							#building_0814_energy_3857 [ source_eui <= 303.5] { polygon-fill: #CE1256; }\
@@ -334,29 +523,8 @@
 		});
 
 	
-		// --------------------------------
-      
-    // fetch the geometry
-    
-    // var polygons = {};
+// --------------------------------
 
-    // var sql = new cartodb.SQL({ user: 'iwsstuart', format: 'geojson' });
-    // sql.execute("select cartodb_id, the_geom from building_0814_energy_3857").done(function(data) {
-    //   var features = data.features;
-    //   for(var i = 0; i < features.length; ++i) {
-    //     var f = geojson.features[i];
-    //     var key = f.properties.cartodb_id
-
-    //     // generate geometry
-    //     var geo = L.GeoJSON.geometryToLayer(features[i].geometry);
-    //     geo.setStyle(style);
-
-    //     // add to polygons
-    //     polygons[key] = polygons[key] ||  [];
-    //     polygons[key].push(geo);
-
-    //   }
-    // });
 
 		}
     </script>
