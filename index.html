@@ -160,11 +160,15 @@
       	box-shadow: 0 0 5px rgba(255,255,255,0.5);
       	height: 400px;
       	width: 600px;
+      	color: white;
       }
 
       .modal-header, .modal-body {
       	border: none;
       	box-shadow: none;
+      }
+      .modal-body div {
+      	margin-bottom: 30px;
       }
 
       .mapbox-logo{
@@ -253,18 +257,18 @@
 			<ul class="list-group">
 			    <li class="list-group-item header"><h5>BUILDING TYPE</h5></li>	
 			    <ul class="list-group items type">
-				    <li id="#" class="list-group-item layer multifamily"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MULTIFAMILY HOUSING</h6></li>	
-				    <li id="#" class="list-group-item layer office"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OFFICE</h6></li>
-				    <li id="#" class="list-group-item layer other"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OTHER</h6></li>
-				    <li id="#" class="list-group-item layer nodata"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>NO DATA</h6></li>
+				    <li id="multifamily" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MULTIFAMILY HOUSING</h6></li>	
+				    <li id="office" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OFFICE</h6></li>
+				    <li id="other" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OTHER</h6></li>
+				    <li id="no-data" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>NO DATA</h6></li>
 			    </ul>
 			    <li class="list-group-item header"><h5>BOROUGH</h5></li>	
-			    <ul class="list-group items">
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MANHATTAN</h6></li>	
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BROOKLYN</h6></li>
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>QUEENS</h6></li>
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BRONX</h6></li>
-				    <li id="#" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>STATEN ISLAND</h6></li>
+			    <ul class="list-group items borough">
+				    <li id="manhattan" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MANHATTAN</h6></li>	
+				    <li id="brooklyn" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BROOKLYN</h6></li>
+				    <li id="queens" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>QUEENS</h6></li>
+				    <li id="bronx" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BRONX</h6></li>
+				    <li id="staten-island" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>STATEN ISLAND</h6></li>
 			    </ul>
 			    <li class="list-group-item header"><h5>COLORS</h5></li>	
 			    <ul class="list-group items colors">			    
@@ -280,10 +284,29 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel"></h4>
+		        <h2 id="building-address" class="modal-title" id="myModalLabel"></h2>
 		      </div>		      
 		      <div class="modal-body">
-		        <p>One fine body&hellip;</p>
+		        <div id="floor-area">
+		        	<h5>TOTAL FLOOR AREA</h5>
+		      		<h4></h4>  	
+		        </div>
+		        <div id="building-height">
+		        	<h5>TOTAL FLOOR AREA</h5>	
+		      		<h4></h4>  	
+		        </div>
+		        <div id="source-eui">
+		      		<h5>TOTAL FLOOR AREA</h5>  	
+		      		<h4></h4>  	
+		        </div>
+		        <div id="ghg-emissions">
+		        	<h5>TOTAL FLOOR AREA</h5>
+		      		<h4></h4>  	
+		        </div>
+		        <div id="energy-star">
+		        	<h5>ENERGY STAR RATING (1-100)</h5>
+		      		<h4></h4>  	
+		        </div>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -302,6 +325,9 @@
     <script>
     window.onload = function() {
 	  
+		function numberWithCommas(x) {
+	  	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 
 // -------------------------------
 // Map object with 'createLayer' method, using Mapbox basemap
@@ -322,7 +348,6 @@
 		new L.Control.Zoom({ position: 'topright' }).addTo(map_object);
 
 		var sublayers = [];
-
 
 // ----------------------------------------
 // Code from original site ( via Javi Santana - http://bl.ocks.org/javisantana/8313604 )
@@ -369,6 +394,7 @@
           map.addLayer(pol[i]);
           polygonsHighlighted.push(pol[i]);
         }
+
       }
 
       function featureOut() {
@@ -381,7 +407,57 @@
 
       layer.on('featureOver', featureOver);
       layer.on('featureOut', featureOut);
-      layer.setInteraction(true);	  	
+      
+ 			layer.on('featureClick', function(e, latlng, pos, data) {
+				
+				var streetnum = data.street_num;
+        var streetname = data.street_nam;
+        var address = streetnum + " " + streetname;
+        var floorArea = data.floor_area;
+        var bldgHeight = data.height_roo;
+        var eui = data.source_eui;
+	    	var ghg = data.total_ghg / data.buildings;
+        var energyStar = data.energy_star;
+        var zip = data.zip;
+				
+				$('#building-address').html(address.toLowerCase());
+				
+				if (floorArea == null) {
+					$('#floor-area h4').html("--");	
+				} else {
+					$('#floor-area h4').html(numberWithCommas(floorArea));
+				}
+
+				if (bldgHeight == null) {
+					$('#building-height h4').html("--");
+				} else {
+					$('#building-height h4').html(numberWithCommas(Math.round(bldgHeight)));
+				}		
+
+				if (eui == null) {
+					$('#source-eui h4').html("--");
+				} else {
+					$('#source-eui h4').html(eui);
+				}
+
+				if (data.total_ghg == null || data.buildings == null) {
+					$('#ghg-emissions h4').html("--");	
+				} else {	
+					$('#ghg-emissions h4').html(ghg);	
+				} 
+
+				if (energyStar == 'Exempt') {
+					$('#energy-star h4').html('exempt');
+				} else if (energyStar == null) {			
+					$('#energy-star h4').html("--");
+				} else {
+					$('#energy-star h4').html(energyStar);	
+				}							
+
+			});
+      
+      layer.setInteraction(true);	  	        
+	  
 	  }
 
 
@@ -395,6 +471,8 @@
 	      // Add buildings layer to sublayers array
 	      var sublayer = layer.getSubLayer(0);
 	      sublayers.push(sublayer);
+
+		  	activeQuery = sublayers[0].getSQL();
 
 	      geometryHover(map_object, layer.getSubLayer(0));
 
@@ -412,59 +490,280 @@
 		  });  
 		});
 
+
+	  // Filter buildings displayed on map
+	  var typeFilter = false;
+	  var boroughFilter = false;
+
+	  // Filter buildings by type
+
+  	$('.type #multifamily').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (boroughFilter) {
+					sublayers[0].set({
+			  		sql: boroughQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				typeFilter = false;	  	
+		  } else if (boroughFilter) {
+				sublayers[0].set({
+			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Multifamily Housing'"
+			  });	  		
+	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Multifamily Housing'";			
+				typeFilter = true;
+			} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Multifamily Housing'"
+			  });  
+	  		typeQuery = sublayers[0].getSQL();
+				console.log(activeQuery);
+				typeFilter = true;
+			}
+		});
+
+		$('.type #office').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (boroughFilter) {
+					sublayers[0].set({
+			  		sql: boroughQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				typeFilter = false;	  	
+		  } else if (boroughFilter) {
+				sublayers[0].set({
+			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Office'"
+			  });	  		
+	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Office'";			
+				typeFilter = true;
+	  	} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Office'"
+			  });  
+	  		typeQuery = sublayers[0].getSQL();
+				console.log(activeQuery);
+				typeFilter = true;
+			}
+		});
+
+		$('.type #other').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (boroughFilter) {
+					sublayers[0].set({
+			  		sql: boroughQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				typeFilter = false;	  	
+		  } else if (boroughFilter) {
+				sublayers[0].set({
+			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t is not null and property_t != 'Multifamily Housing' and property_t != 'Office'"
+			  });	  		
+	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t is not null and property_t != 'Multifamily Housing' and property_t != 'Office'";
+				typeFilter = true;
+			} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t is not null and property_t != 'Multifamily Housing' and property_t != 'Office'"
+			  });  
+	  		typeQuery = sublayers[0].getSQL();
+				typeFilter = true;
+			}
+		});
+
+	 	$('.type #no-data').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (boroughFilter) {
+					sublayers[0].set({
+			  		sql: boroughQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				typeFilter = false;	  	
+		  } else if (boroughFilter) {
+				sublayers[0].set({
+			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t is null"
+			  });	  		
+	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t is null";
+				typeFilter = true;
+			} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t is null"
+			  });  
+	  		typeQuery = sublayers[0].getSQL();
+				typeFilter = true;
+			}
+		});
+
+
+	  // Filter by borough
+
+  	$('.borough #manhattan').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (typeFilter) {
+					sublayers[0].set({
+			  		sql: typeQuery
+			  	});
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}
+				boroughFilter = false;	  	
+		  } else if (typeFilter) {
+				sublayers[0].set({
+			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'MANHATTAN'"
+			  });	  		
+	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'MANHATTAN'"
+				boroughFilter = true;
+	  	} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'MANHATTAN'"
+			  });  
+	  		boroughQuery = sublayers[0].getSQL();
+				boroughFilter = true;
+			}
+		});
+
+		$('.borough #queens').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (typeFilter) {
+					sublayers[0].set({
+			  		sql: typeQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				boroughFilter = false;	  	
+		  } else if (typeFilter) {
+				sublayers[0].set({
+			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'QUEENS'"
+			  });	  		
+	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'QUEENS'"
+				boroughFilter = true;
+			} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'QUEENS'"
+			  });  
+	  		boroughQuery = sublayers[0].getSQL();
+				boroughFilter = true;
+			}
+		});
+
+		$('.borough #bronx').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (typeFilter) {
+					sublayers[0].set({
+			  		sql: typeQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				boroughFilter = false;	  	
+		  } else if (typeFilter) {
+				sublayers[0].set({
+			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'BRONX'"
+			  });	  		
+	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BRONX'"
+				boroughFilter = true;
+			} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BRONX'"
+			  });  
+	  		boroughQuery = sublayers[0].getSQL();
+				boroughFilter = true;
+			}
+		});
+
+	 	$('.borough #staten-island').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (typeFilter) {
+					sublayers[0].set({
+			  		sql: typeQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				boroughFilter = false;	  	
+		  } else if (typeFilter) {
+				sublayers[0].set({
+			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'STATEN ISLAND'"
+			  });	  		
+	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'STATEN ISLAND'"
+				boroughFilter = true;
+			} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'STATEN ISLAND'"
+			  });  
+	  		boroughQuery = sublayers[0].getSQL();
+				boroughFilter = true;
+			}
+		});
+
+		$('.borough #brooklyn').click( function() {
+		  if ($(this).hasClass('active')) {
+				if (typeFilter) {
+					sublayers[0].set({
+			  		sql: typeQuery
+			  	});	
+				} else {
+					sublayers[0].set({
+			  		sql: "SELECT * FROM building_0814_energy_3857"
+			  	});
+				}	  	
+				boroughFilter = false;	  	
+		  } else if (typeFilter) {
+				sublayers[0].set({
+			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'BROOKLYN'"
+			  });	  		
+	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BROOKLYN'"
+				boroughFilter = true;
+			} else { 	
+				sublayers[0].set({
+			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BROOKLYN'"
+			  });  
+	  		boroughQuery = sublayers[0].getSQL();
+				boroughFilter = true;
+			}
+		});
+
+
 		// Toggle circle on and off
 		$('.list-group-item').click( function() {
-			$(this).parent().children('.active')
-				.removeClass('active')
-				.children('span')
+			if ($(this).hasClass('active')) {
+				$(this).children('span')
 					.toggleClass('fa-circle-thin')
-					.toggleClass('fa-circle');
-			$(this).addClass('active');
-			$(this).children('span')
-				.toggleClass('fa-circle-thin')
-				.toggleClass('fa-circle');
+					.toggleClass('fa-circle');				
+			} else {
+				$(this).parent().children('.active')
+					.removeClass('active')
+					.children('span')
+						.toggleClass('fa-circle-thin')
+						.toggleClass('fa-circle');
+				$(this).children('span')
+					.toggleClass('fa-circle-thin')
+					.toggleClass('fa-circle');				
+			} 
+			$(this).toggleClass('active');
 		});
-
-
-	  // Filter buildings displayed by type
-
-  	$('.type .multifamily').click( function() {
-		  // var colorScheme = $(this).attr('id');
-		  sublayers[0].set({
-		  	sql: "select * from building_0814_energy_3857 where property_t = 'Multifamily Housing'"
-		  });  
-		});
-
-		$('.type .office').click( function() {
-		  // var colorScheme = $(this).attr('id');
-		  sublayers[0].set({
-		  	sql: "select * from building_0814_energy_3857 where property_t = 'Office'"
-		  });  
-		});
-
-		$('.type .other').click( function() {
-		  // var colorScheme = $(this).attr('id');
-		  sublayers[0].set({
-		  	sql: "select * from building_0814_energy_3857 where property_t = 'Other'"
-		  });  
-		});
-
-	 	$('.type .nodata').click( function() {
-		  // var colorScheme = $(this).attr('id');
-		  sublayers[0].set({
-		  	sql: "select * from building_0814_energy_3857 where property_t is null"
-		  });  
-		});
-
-
-	 	$('.type .nodata').click( function() {
-		  // var colorScheme = $(this).attr('id');
-		  sublayers[0].set({
-		  	sql: "select * from building_0814_energy_3857 where property_t is null"
-		  });  
-		});
-
-
 
 // -------------------------------
 // Custom legend
