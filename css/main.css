@@ -1,102 +1,3 @@
-/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
-
-/*
- * What follows is the result of much research on cross-browser styling.
- * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
- * Kroc Camen, and the H5BP dev community and team.
- */
-
-/* ==========================================================================
-   Base styles: opinionated defaults
-   ========================================================================== */
-
-html,
-button,
-input,
-select,
-textarea {
-    color: #222;
-}
-
-html {
-    font-size: 1em;
-    line-height: 1.4;
-}
-
-/*
- * Remove text-shadow in selection highlight: h5bp.com/i
- * These selection rule sets have to be separate.
- * Customize the background color to match your design.
- */
-
-::-moz-selection {
-    background: #b3d4fc;
-    text-shadow: none;
-}
-
-::selection {
-    background: #b3d4fc;
-    text-shadow: none;
-}
-
-/*
- * A better looking default horizontal rule
- */
-
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
-}
-
-/*
- * Remove the gap between images, videos, audio and canvas and the bottom of
- * their containers: h5bp.com/i/440
- */
-
-audio,
-canvas,
-img,
-video {
-    vertical-align: middle;
-}
-
-/*
- * Remove default fieldset styles.
- */
-
-fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
-/*
- * Allow only vertical resizing of textareas.
- */
-
-textarea {
-    resize: vertical;
-}
-
-/* ==========================================================================
-   Browse Happy prompt
-   ========================================================================== */
-
-.browsehappy {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -106,648 +7,138 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {
-    margin: 0;
-    padding: 0;
-    font-weight: normal;
-    text-decoration:none;
-    color:inherit;
-    list-style: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-/*    position: relative;
-*/}
-
-ol, ul {
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  text-decoration:none;
+  color:inherit;
+  list-style: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
-    color: #222;
-    font-size: 1em;
-    line-height: 1.4;
-    background-color: #222;
-    height: 100%;
+* {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 
-@font-face {
-    font-family: 'novecento_sans_widelight';
-    src: url('Novecentosanswide-Light-webfont.eot');
-    src: url('Novecentosanswide-Light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Novecentosanswide-Light-webfont.woff') format('woff'),
-         url('Novecentosanswide-Light-webfont.ttf') format('truetype'),
-         url('Novecentosanswide-Light-webfont.svg#novecento_sans_widelight') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    
+body { height: 100%; }
+      
+h3 { 
+  font-family: "proxima-nova"; 
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: white; 
+}        
+      
+h4 { 
+  font-family: "clarendon-urw-extra-narrow"; 
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: white; 
 }
 
-@font-face {
-    font-family: 'neutonitalic';
-    src: url('neuton-italic-webfont.eot');
-    src: url('neuton-italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('neuton-italic-webfont.woff') format('woff'),
-         url('neuton-italic-webfont.ttf') format('truetype'),
-         url('neuton-italic-webfont.svg#neutonitalic') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    
+h5 {
+  font-family: "proxima-nova";
+  font-weight: 500; 
+  letter-spacing: 1px;
+  font-size: 0.9em;
 }
 
-@font-face {
-    font-family: 'neutonlight';
-    src: url('neuton-light-webfont.eot');
-    src: url('neuton-light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('neuton-light-webfont.woff') format('woff'),
-         url('neuton-light-webfont.ttf') format('truetype'),
-         url('neuton-light-webfont.svg#neutonlight') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    
+h6 {
+  font-family: "proxima-nova";
+  font-weight: 400; 
+  letter-spacing: 1px;
+  display: inline;
+  font-size: 0.8em;
+}             
+
+#map { 
+  position: absolute;
+  left: 240px; 
+  top: 300px;         
+  width: calc(100% - 240px);
+  height: calc(100% - 300px);
 }
 
-@font-face {
-    font-family: 'neutonregular';
-    src: url('neuton-regular-webfont.eot');
-    src: url('neuton-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('neuton-regular-webfont.woff') format('woff'),
-         url('neuton-regular-webfont.ttf') format('truetype'),
-         url('neuton-regular-webfont.svg#neutonregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    
+#details-panel {
+  position: absolute;
+  left: 240px;        
+  height: 300px;
+  width: calc(100% - 240px);
+  background-color: rgba(0,0,0,1);
+  z-index: 100;
+  color: white;
+}
+#details-panel .content {
+  margin: 25px 30px;
+}
+#details-panel div {
+  margin-bottom: 5px;
 }
 
-@font-face {
-    font-family: 'neutonbold';
-    src: url('neuton-bold-webfont.eot');
-    src: url('neuton-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('neuton-bold-webfont.woff') format('woff'),
-         url('neuton-bold-webfont.ttf') format('truetype'),
-         url('neuton-bold-webfont.svg#neutonbold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+.panel { 
+  box-shadow: 0 0 5px rgba(255,255,255,0.5);
+  border: none;
+  background-color: black;
+}
+.panel-default { 
+  width: 240px;
+  height: 100%;
+  overflow: scroll;
+  z-index: 100;
+  float: left;
+  color: #ccc;
+  margin-bottom: 0;
+}
+.panel-default > .panel-heading { 
+  background-color: #2a2a2a;
+  border-color: #666;
+}
+.panel-heading {
+  padding: 12px 15px;
+}
+.panel-body { 
+  padding-left: 0; 
+  padding-right: 0; 
 }
 
-@font-face {
-    font-family: 'neutonextrabold';
-    src: url('neuton-extrabold-webfont.eot');
-    src: url('neuton-extrabold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('neuton-extrabold-webfont.woff') format('woff'),
-         url('neuton-extrabold-webfont.ttf') format('truetype'),
-         url('neuton-extrabold-webfont.svg#neutonextrabold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+.list-group { 
+  margin-bottom: -1px; 
+}
+.list-group-item { 
+  background-color: #444; 
+  border-color: #666;
+}
+.list-group-item.header {
+  padding: 9px 15px;
+}
+.list-group-item.layer {
+  background-color: #333;
+  border-color: #444;
+  padding: 10px 15px;
+  line-height: 0px;
+}
+.list-group-item.layer .fa {
+  font-size: .5em;
+  margin-right: 5px;
+}
+.list-group-item.layer:hover { 
+  background-color: #666; 
+  cursor: pointer; 
 }
 
-@font-face {
-    font-family: 'neutonextralight';
-    src: url('neuton-extralight-webfont.eot');
-    src: url('neuton-extralight-webfont.eot?#iefix') format('embedded-opentype'),
-         url('neuton-extralight-webfont.woff') format('woff'),
-         url('neuton-extralight-webfont.ttf') format('truetype'),
-         url('neuton-extralight-webfont.svg#neutonextralight') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+.list-group-item.active { 
+  color: white;
+}
+.list-group-item.active:hover { 
+  border-color: #666;
 }
 
-@font-face {
-    font-family: 'neuton_cursiveregular';
-    src: url('neutoncursive-regular-webfont.eot');
-    src: url('neutoncursive-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('neutoncursive-regular-webfont.woff') format('woff'),
-         url('neutoncursive-regular-webfont.ttf') format('truetype'),
-         url('neutoncursive-regular-webfont.svg#neuton_cursiveregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+.mapbox-logo{
+  display: none !important;
 }
-
-@font-face {
-    font-family: 'novecento_sans_widenormal';
-    src: url('Novecentosanswide-Normal-webfont.eot');
-    src: url('Novecentosanswide-Normal-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Novecentosanswide-Normal-webfont.woff') format('woff'),
-         url('Novecentosanswide-Normal-webfont.ttf') format('truetype'),
-         url('Novecentosanswide-Normal-webfont.svg#novecento_sans_widenormal') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'novecento_sans_widemedium';
-    src: url('Novecentosanswide-Medium-webfont.eot');
-    src: url('Novecentosanswide-Medium-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Novecentosanswide-Medium-webfont.woff') format('woff'),
-         url('Novecentosanswide-Medium-webfont.ttf') format('truetype'),
-         url('Novecentosanswide-Medium-webfont.svg#novecento_sans_widemedium') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'novecento_sans_widedemibold';
-    src: url('Novecentosanswide-DemiBold-webfont.eot');
-    src: url('Novecentosanswide-DemiBold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Novecentosanswide-DemiBold-webfont.woff') format('woff'),
-         url('Novecentosanswide-DemiBold-webfont.ttf') format('truetype'),
-         url('Novecentosanswide-DemiBold-webfont.svg#novecento_sans_widedemibold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'novecento_sans_widebook';
-    src: url('Novecentosanswide-Book-webfont.eot');
-    src: url('Novecentosanswide-Book-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Novecentosanswide-Book-webfont.woff') format('woff'),
-         url('Novecentosanswide-Book-webfont.ttf') format('truetype'),
-         url('Novecentosanswide-Book-webfont.svg#novecento_sans_widebook') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'novecento_sans_wide_bookbold';
-    src: url('Novecentosanswide-Bold-webfont.eot');
-    src: url('Novecentosanswide-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Novecentosanswide-Bold-webfont.woff') format('woff'),
-         url('Novecentosanswide-Bold-webfont.ttf') format('truetype'),
-         url('Novecentosanswide-Bold-webfont.svg#novecento_sans_wide_bookbold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-h1 { font-family: 'novecento_sans_widebook'; }
-
-h2 { font-family: 'novecento_sans_widelight'; font-size: 2.5em; }
-
-h3 { font-family: 'neutonbold'; font-size: 1.6em; }
-
-h4 { font-family: 'novecento_sans_widedemibold'; font-size: 1.2em; }
-
-h5 { font-family: 'novecento_sans_widedemibold'; font-size: 1.2em; }
-
-p { font-family: 'neutonregular'; }
-
-#header {
-    height: 50px;
-    margin-left: 3%;
-}
-
-#header h1 { font-family: 'neutonbold'; font-size:2.2em; color:#FFF; line-height: 50px; display: inline; }
-
-#header h1 span { color: #FF0000; }
-
-#header h3 { color:#bbb; display: inline; margin-left: 25px; font-size: 1.3em; }
-
-#nav-main {
-    height: 50px;
-    width: 100%;
-    color: #999;
-    background-color: #222;
-    line-height: 60px;
-    z-index: 100000;
-}
-
-#nav-main li { float: left; padding-left: 50px; padding-right: 50px; }
-
-#nav-main li:hover { color: #FFF; cursor: pointer; }
-
-.fixed { position: fixed; top: 0; z-index: 100; }
-
-#map {
-    position: absolute;
-    top:50px;
-    bottom: 0;
-    width: 100%;
-    height: auto;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#legend {
-    position: absolute;
-    bottom: 40px;
-    left: 10px;
-    height: 55px;
-    width: 275px;
-    z-index: 1;
-    background-color: rgba(102, 102, 102, 0.8);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #000000;
-    -webkit-box-shadow: 0 0 5px #000000;
-    -moz-box-shadow: 0 0 5px #000000;
-}
-
-#colorbar-grey { position: absolute; height: 15px; width: 175px; background-color: #999; left: 50px; top: 20px; visibility: visible; }
-
-#legend ul { margin-left: 10px; }
-
-#legend ul li { float: left; margin-top: 20px; }
-
-.desaturate {
-    -webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    filter: grayscale(100%);
-    opacity: 0.5;
-}
-
-li.min, li.max { width: 40px; text-align: center; line-height: 15px; font-family: 'novecento_sans_widedemibold'; color: #FFF; }
-
-li.quartile { float: left; height: 15px; width: 25px; visibility: hidden; }
-
-#menu-panel {
-    position: absolute;
-    top: 0;
-    right: -350px;
-    width: 350px;
-    min-height: 100%;
-    height: auto;
-    z-index: 10000;
-    overflow: auto; 
-    background-color: #555;
-    -webkit-transition: right .5s ease-in-out;
-    -moz-transition: right .5s ease-in-out;
-    -o-transition: right .5s ease-in-out;
-    transition: right .5s ease-in-out;
-}
-
-#menu-panel h3 { font-size: 1.8em; }
-
-#menu-panel.active { right: 0; }
-
-#menu-arrow-bar { 
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #FF0000;
-    width: 40px;
-    height: 120px;
-    border-radius: 0 0 0 10px; 
-    z-index: 10000;
-    -webkit-transition: right .5s ease-in-out;
-    -moz-transition: right .5s ease-in-out;
-    -o-transition: right .5s ease-in-out;
-    transition: right .5s ease-in-out;
-}
-
-#menu-arrow-bar.active { right: 400px; }
-
-#menu-arrow { padding: 11px; cursor: pointer; }
-
-#menu-info { padding: 16px; cursor: pointer; }
-
-#menu-info.current { background-color: #990000; }
-
-#menu-search { padding: 16px; cursor: pointer; }
-
-#menu-search.current { background-color: #990000; }
-
-#menu-arrow.rotated { 
-    transform:rotate(180deg);
-    -ms-transform:rotate(180deg); /* IE 9 */
-    -webkit-transform:rotate(180deg); /* Opera, Chrome, and Safari */
-}
-
-#menu-arrow:hover, #menu-info:hover, #menu-search:hover { background-color: #990000; background-clip: }
-
-#search { height: 70px; color: #777; }
-
-#search-results { height: 300px; width: 305px; background-color: #666; margin-left: 25px; }
-
-.search { width: 300px; height: 28px; margin-top: 27px; margin-left: 25px; font-family: 'neutonregular'; text-indent:.5em; font-size: 1.4em; background-color: #bbb; border:none;}
-
-.search:focus { outline: none; }
-
-.map-view h5 { 
-    height: 40px;
-    text-align: left;
-    padding-left: 35px;
-    line-height: 40px;
-    color: #ddd;
-    background-color: #555;
-    text-decoration: none;
-    border-bottom: 1px solid #333;
-}
-
-.map-view h5.filter-head { color: #bbb; font-family: 'novecento_sans_widemedium'; }
-
-.map-view h5.filter-option:hover { color: #FFF; background-color: #999; cursor: pointer; }
-
-.map-view h5.color-option:hover { color: #FFF; background-color: #999; cursor: pointer; }
-
-.map-view div { display: none; width: 100%; background-color: #777; }
-
-.map-view div.borough { display: none; width: 100%; background-color: #fff; }
-
-.map-view div a h5 { background-color: #777; border-bottom: 1px solid #666; font-family: 'novecento_sans_widenormal'; }
-
-.map-view div a h5:hover { color: #fff; background-color: #666; cursor: pointer; }
-
-.floor-area { padding-bottom: 15px; color: #777; }
-
-#clearfilters, #clearcolors {
-    height: 30px;
-    width: 120px;
-    background-color: #BBB;
-    border: none;
-    line-height: 30px;
-    margin-top: 15px;
-    margin-left: 35px;
-    color: #333;
-    font-family: 'novecento_sans_widenormal';
-    text-align: center;
-    padding-left: 0;
-    cursor: pointer;
-    clear: both;
-}
-
-#clearfilters:hover, #clearcolors:hover { background-color: #DDD; }
-
-.min-max { 
-    width: 100px; 
-    height: 25px; 
-    font-family: 'neutonregular'; 
-    text-indent:.5em; 
-    font-size: 1.2em; 
-    margin-left: 35px; 
-    margin-top: 15px;
-    background-color: #bbb; 
-    border: none;
-}
-
-.min-max:focus { outline: none; }
-
-#filters, #bldg-data { width: 350px; background-color: #555; overflow: auto; position: absolute; }
-
-#filter-menu { margin-top: 10px; }
-
-.check { margin-left: 10px; padding-bottom: 2px; }
-
-.map-view div.borough { padding-bottom: 15px; padding-top: 15px; }
-
-.borough img { display: inline-block; margin-left: 25px; background-color: #777; box-shadow: inset -1px 0 0 white; }
-
-.borough img:hover { cursor: pointer; background-color: #990000; }
-
-img.current-borough { background-color: #990000; }
-
-#color-menu { margin-top: 25px; padding-bottom: 40px; }
-
-
-#bldg-data table { margin-left: 35px; }
-
-#bldg-data h3 { 
-    font-family: 'novecento_sans_widenormal'; 
-    font-size: 1.8em;
-    margin-top: 25px;
-    margin-bottom: 20px; 
-    padding-left: 35px; 
-    color: #fff; 
-    background-color: #555;
-}
-
-#bldg-data h4 { line-height: .5em; font-size: 1.2em; font-family: 'novecento_sans_widemedium'; color: #ddd; }
-
-#bldg-data h2 { font-size: 2.5em; font-family: 'neutonbold'; margin-bottom: 16px; color: #fff; display: inline-block; letter-spacing: .5px; }
-
-#streetview { display: none; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; margin-bottom: 50px; }
-
-.inline { display: inline; margin-left: 10px; }
-
-#bldg-data h5 { font-family: 'neutonbold'; font-size: 1.4em; color: #ddd; }
-
-
-/*.building-type a {
-    width: 100%;
-    height: 50px;
-    background-color: "red";
-}*/
-
-.map-view div a .current-bldg-type { background-color: #666; color: #fff; font-family: 'novecento_sans_widemedium'; }
-
-#color-menu .current-color-option { background-color: #777; color: #fff; }
-
-#nav { position: relative; float: right; display: inline; width: auto; height: 100%; }
-
-.nav-toggle { float: right; height: 50px; width: 50px; }
-
-
-
-
-
-/* ==========================================================================
-   Helper classes
-   ========================================================================== */
-
-/*
- * Image replacement
- */
-
-.ir {
-    background-color: transparent;
-    border: 0;
-    overflow: hidden;
-    /* IE 6/7 fallback */
-    *text-indent: -9999px;
-}
-
-.ir:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 150%;
-}
-
-/*
- * Hide from both screenreaders and browsers: h5bp.com/u
- */
-
-.hidden {
-    display: none !important;
-    visibility: hidden;
-}
-
-/*
- * Hide only visually, but have it available for screenreaders: h5bp.com/v
- */
-
-.visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-}
-
-/*
- * Extends the .visuallyhidden class to allow the element to be focusable
- * when navigated to via the keyboard: h5bp.com/p
- */
-
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-    clip: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
-}
-
-/*
- * Hide visually and from screenreaders, but maintain layout
- */
-
-.invisible {
-    visibility: hidden;
-}
-
-/*
- * Clearfix: contain floats
- *
- * For modern browsers
- * 1. The space content is one way to avoid an Opera bug when the
- *    `contenteditable` attribute is included anywhere else in the document.
- *    Otherwise it causes space to appear at the top and bottom of elements
- *    that receive the `clearfix` class.
- * 2. The use of `table` rather than `block` is only necessary if using
- *    `:before` to contain the top-margins of child elements.
- */
-
-.clearfix:before,
-.clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
-}
-
-.clearfix:after {
-    clear: both;
-}
-
-/*
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
-
-.clearfix {
-    *zoom: 1;
-}
-
-/* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   These examples override the primary ('mobile first') styles.
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (max-width: 480px) {
-    #header { width: 100%; height: 70px; }
-    #header h1 { font-size: 2em; line-height: 50px; display: block; text-align: center; }
-    #header h3 { display: none; }
-    #map { top: 50px; }
-    #menu-panel {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 10000;
-        background-color: #555;
-        overflow: auto;
-        -webkit-transition: right .5s ease-in-out;
-        -moz-transition: right .5s ease-in-out;
-        -o-transition: right .5s ease-in-out;
-        transition: right .5s ease-in-out;
-    }
-}
-
-@media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
-    /* Style adjustments for high resolution devices */
-}
-
-/* ==========================================================================
-   Print styles.
-   Inlined to avoid required HTTP connection: h5bp.com/r
-   ========================================================================== */
-
-@media print {
-    * {
-        background: transparent !important;
-        color: #000 !important; /* Black prints faster: h5bp.com/s */
-        box-shadow: none !important;
-        text-shadow: none !important;
-    }
-
-    a,
-    a:visited {
-        text-decoration: underline;
-    }
-
-    a[href]:after {
-        content: " (" attr(href) ")";
-    }
-
-    abbr[title]:after {
-        content: " (" attr(title) ")";
-    }
-
-    /*
-     * Don't show links for images, or javascript/internal links
-     */
-
-    .ir a:after,
-    a[href^="javascript:"]:after,
-    a[href^="#"]:after {
-        content: "";
-    }
-
-    pre,
-    blockquote {
-        border: 1px solid #999;
-        page-break-inside: avoid;
-    }
-
-    thead {
-        display: table-header-group; /* h5bp.com/t */
-    }
-
-    tr,
-    img {
-        page-break-inside: avoid;
-    }
-
-    img {
-        max-width: 100% !important;
-    }
-
-    @page {
-        margin: 0.5cm;
-    }
-
-    p,
-    h2,
-    h3 {
-        orphans: 3;
-        widows: 3;
-    }
-
-    h2,
-    h3 {
-        page-break-after: avoid;
-    }
+.cartodb-logo{
+  display: none !important;
 }

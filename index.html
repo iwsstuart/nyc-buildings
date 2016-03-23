@@ -30,154 +30,7 @@
     <!-- Fontawesome for additional glyphicons -->    
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-    <!-- Map takes up full browser window -->
-    <style>
-	    html, body, div, span, applet, object, iframe,
-			h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-			a, abbr, acronym, address, big, cite, code,
-			del, dfn, em, font, img, input, ins, kbd, q, s, samp,
-			small, strike, strong, sub, sup, tt, var,
-			b, u, i, center,
-			dl, dt, dd, ol, ul, li,
-			fieldset, form, label, legend,
-			table, caption, tbody, tfoot, thead, tr, th, td {
-			    margin: 0;
-			    padding: 0;
-			    font-weight: normal;
-			    text-decoration:none;
-			    color:inherit;
-			    list-style: none;
-			    -webkit-font-smoothing: antialiased;
-			    -moz-osx-font-smoothing: grayscale;
-			}
-
-			* {
-		    -webkit-border-radius: 0 !important;
-     	    -moz-border-radius: 0 !important;
-		    border-radius: 0 !important;
-			}
-
-      body { height: 100%; }
-        
-			h4 { 
-      	font-family: "clarendon-urw-extra-narrow"; 
-      	font-weight: 900;
-      	letter-spacing: 1px;
-      	color: white; 
-      }
-
-      h5 {
-				font-family: "proxima-nova";
-        font-weight: 500; 
-        letter-spacing: 1px;
-        font-size: 0.9em;
-      }
-
-      h6 {
-				font-family: "proxima-nova";
-        font-weight: 400; 
-        letter-spacing: 1px;
-        display: inline;
-        font-size: 0.8em;
-      }             
-      
-      #map { 
-      	position:absolute; 
-      	top:0; 
-      	bottom:0; 
-      	width:100%; 
-      }
-
-      .panel { 
-        	box-shadow: 0 0 5px rgba(255,255,255,0.5);
-        	border: none;
-        	background-color: black;
-			}
-
-      .panel-default { 
-      	position:absolute; 
-      	left: 0;
-      	width:240px;
-      	height: 100%;
-      	overflow: scroll;
-      	z-index: 100;
-      	color: #ccc;
-      	background-color: 'red';
-      	margin-bottom: 0;
-      }
-      .panel-default > .panel-heading { 
-      	background-color: #2a2a2a;
-      	border-color: #666;
-      }
-      .panel-heading {
-      	padding: 12px 15px;
-      }
-      .panel-body { 
-      	padding-left: 0; 
-      	padding-right: 0; 
-      }
-
-			.list-group { 
-				margin-bottom: -1px; 
-			}
-			.list-group-item { 
-				background-color: #444; 
-				border-color: #666;
-			}
-			.list-group-item.header {
-				padding: 9px 15px;
-			}
-	    .list-group-item.layer {
-				background-color: #333;
-				border-color: #444;
-				padding: 10px 15px;
-				line-height: 0px;
-			}
-	    .list-group-item.layer .fa {
-	    	font-size: .5em;
-	    	margin-right: 5px;
-	    }
-      .list-group-item.layer:hover { 
-      	background-color: #666; 
-      	cursor: pointer; 
-      }
-
-      .list-group-item.active { 
-      	color: white;
-      }
-      .list-group-item.active:hover { 
-				border-color: #666;
-      }
-
-      .modal.building-details {
-      	position: absolute;
-      	left: 20%;
-      	top: 30px;
-      }
-
-      .modal-content {
-      	background-color: rgba(0,0,0,0.7);
-      	box-shadow: 0 0 5px rgba(255,255,255,0.5);
-      	height: 400px;
-      	width: 600px;
-      	color: white;
-      }
-
-      .modal-header, .modal-body {
-      	border: none;
-      	box-shadow: none;
-      }
-      .modal-body div {
-      	margin-bottom: 30px;
-      }
-
-      .mapbox-logo{
-    		display: none !important;
-			}
-			.cartodb-logo{
-    		display: none !important;
-			}
-    </style>
+		<link rel="stylesheet" href="css/main.css">
 
     <style type="cartocss/html" id="eui-quantiles">
 			/** choropleth visualization */
@@ -247,73 +100,73 @@
 
   </head>
   <body>
-    <div id="map" data-toggle="modal" data-target=".building-details"></div>
 
-    <div class="test"></div>
     <div class="panel panel-default">
 
 			<!-- Default panel contents -->
 			<div class="panel-heading"><h4>NYC*kWh</h4></div>
 			<ul class="list-group">
-			    <li class="list-group-item header"><h5>BUILDING TYPE</h5></li>	
-			    <ul class="list-group items type">
-				    <li id="multifamily" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MULTIFAMILY HOUSING</h6></li>	
-				    <li id="office" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OFFICE</h6></li>
-				    <li id="other" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OTHER</h6></li>
-				    <li id="no-data" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>NO DATA</h6></li>
-			    </ul>
-			    <li class="list-group-item header"><h5>BOROUGH</h5></li>	
-			    <ul class="list-group items borough">
-				    <li id="manhattan" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MANHATTAN</h6></li>	
-				    <li id="brooklyn" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BROOKLYN</h6></li>
-				    <li id="queens" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>QUEENS</h6></li>
-				    <li id="bronx" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BRONX</h6></li>
-				    <li id="staten-island" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>STATEN ISLAND</h6></li>
-			    </ul>
-			    <li class="list-group-item header"><h5>COLORS</h5></li>	
-			    <ul class="list-group items colors">			    
-			    	<li id="eui-quantiles" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>ENERGY USE INTENSITY</h6></li>	
-			    	<li id="ghg-quantiles" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>TOTAL GHG EMISSIONS</h6></li>
-			    </ul>				
+		    <li class="list-group-item header"><h5>BUILDING TYPE</h5></li>	
+		    <ul class="list-group items type">
+			    <li id="multifamily" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MULTIFAMILY HOUSING</h6></li>	
+			    <li id="office" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OFFICE</h6></li>
+			    <li id="other" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>OTHER</h6></li>
+			    <li id="no-data" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>NO DATA</h6></li>
+		    </ul>
+		    <li class="list-group-item header"><h5>BOROUGH</h5></li>	
+		    <ul class="list-group items borough">
+			    <li id="manhattan" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>MANHATTAN</h6></li>	
+			    <li id="brooklyn" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BROOKLYN</h6></li>
+			    <li id="queens" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>QUEENS</h6></li>
+			    <li id="bronx" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>BRONX</h6></li>
+			    <li id="staten-island" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>STATEN ISLAND</h6></li>
+		    </ul>
+		    <li class="list-group-item header"><h5>COLORS</h5></li>	
+		    <ul class="list-group items colors">			    
+		    	<li id="eui-quantiles" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>ENERGY USE INTENSITY</h6></li>	
+		    	<li id="ghg-quantiles" class="list-group-item layer"><span class="fa fa-circle-thin" aria-hidden="true"></span><h6>TOTAL GHG EMISSIONS</h6></li>
+		    </ul>				
 			</ul>
 
 		</div>
 
-		<div class="modal building-details" tabindex="-1" role="dialog">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h2 id="building-address" class="modal-title" id="myModalLabel"></h2>
-		      </div>		      
-		      <div class="modal-body">
-		        <div id="floor-area">
-		        	<h5>TOTAL FLOOR AREA</h5>
-		      		<h4></h4>  	
-		        </div>
-		        <div id="building-height">
-		        	<h5>TOTAL FLOOR AREA</h5>	
-		      		<h4></h4>  	
-		        </div>
-		        <div id="source-eui">
-		      		<h5>TOTAL FLOOR AREA</h5>  	
-		      		<h4></h4>  	
-		        </div>
-		        <div id="ghg-emissions">
-		        	<h5>TOTAL FLOOR AREA</h5>
-		      		<h4></h4>  	
-		        </div>
-		        <div id="energy-star">
-		        	<h5>ENERGY STAR RATING (1-100)</h5>
-		      		<h4></h4>  	
-		        </div>
-		      </div>
-		    </div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+		<div id="details-panel">
 
+			<div class="content">
+				<div class="header">
+	<!-- 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+	        <h3 id="building-address"></h3>
+	      </div>		      
+	      <div class="body">
+	        <div id="floor-area">
+	        	<h6>TOTAL FLOOR AREA</h6>
+	      		<h4></h4>  	
+	        </div>
+	        <div id="building-height">
+	        	<h6>BUILDING HEIGHT</h6>	
+	      		<h4></h4>  	
+	        </div>
+	        <div id="source-eui">
+	      		<h6>SOURCE EUI</h6>  	
+	      		<h4></h4>  	
+	        </div>
+	        <div id="ghg-emissions">
+	        	<h6>GHG EMISSIONS</h6>
+	      		<h4></h4>  	
+	        </div>
+	        <div id="energy-star">
+	        	<h6>ENERGY STAR RATING (1-100)</h6>
+	      		<h4></h4>  	
+	        </div>
+	      </div>			
+      </div>
 
+		</div>
 
+		<div id="map"></div>
+
+    <!-- include d3.js -->
+		<script src="//d3js.org/d3.v3.min.js"></script>
 
     <!-- include cartodb.js library -->
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
@@ -321,512 +174,7 @@
     <!-- include mapbox.js standalone (no Leaflet - there is a conflict when it is loaded twice) -->
 		<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.standalone.js'></script>
     
-    <!-- Drop your code between the script tags below! -->
-    <script>
-    window.onload = function() {
-	  
-		function numberWithCommas(x) {
-	  	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
-
-// -------------------------------
-// Map object with 'createLayer' method, using Mapbox basemap
-
-    L.mapbox.accessToken = 'pk.eyJ1IjoiaXdzc3R1YXJ0IiwiYSI6InNaNzMzVXMifQ.OFDL1zM5OjRUHcL_Y5htCA';
-  
-    // Choose center and zoom level
-	  var options = {
-	    center: [40.75, -73.94], // NYC
-	    zoom: 11,
-	    zoomControl: false
-	  }
-
-	  // Instantiate map object on specified DOM element
-	  var map_object = new L.mapbox.map('map', 'mapbox.dark', options);
-
-	  // Set new zoomControl position
-		new L.Control.Zoom({ position: 'topright' }).addTo(map_object);
-
-		var sublayers = [];
-
-// ----------------------------------------
-// Code from original site ( via Javi Santana - http://bl.ocks.org/javisantana/8313604 )
-// Highlight buildings on hover
-
-    var polygons = {};
-
-	  function geometryHover(map, layer) {
-
-      options = options || {}
-      var HIGHLIGHT_STYLE = {
-        weight: 3,
-        color: '#FFFFFF',
-        opacity: 1,
-        fillColor: '#FFFFFF',
-        fillOpacity: 0.3
-      };
-      style = options.style || HIGHLIGHT_STYLE;
-      var polygonsHighlighted = [];
-
-    	// fetch the geometry	
-	    var sql = new cartodb.SQL({ user: 'iwsstuart', format: 'geojson' });
-			// sql.execute("select cartodb_id, the_geom from building_0814_energy_3857").done(function(data) {	 
-	  //     var features = data.features;
-
-			// 	for(var i = 0; i < features.length; ++i) {
-	  //       var f = data.features[i];
-	  //       var key = f.properties.cartodb_id
-
-	  //       // generate geometry
-	  //       var geo = L.GeoJSON.geometryToLayer(features[i].geometry);
-	  //       geo.setStyle(style);
-
-	  //       // add to polygons
-	  //       polygons[key] = polygons[key] ||  [];
-	  //       polygons[key].push(geo);
-	  //     }
-	  //   });
-
-      function featureOver(e, pos, latlng, data) {
-        featureOut();
-        var pol = polygons[data.cartodb_id] || [];
-        for(var i = 0; i < pol.length; ++i) {
-          map.addLayer(pol[i]);
-          polygonsHighlighted.push(pol[i]);
-        }
-
-      }
-
-      function featureOut() {
-        var pol = polygonsHighlighted;
-        for(var i = 0; i < pol.length; ++i) {
-          map.removeLayer(pol[i]);
-        }
-        polygonsHighlighted = [];
-      }
-
-      layer.on('featureOver', featureOver);
-      layer.on('featureOut', featureOut);
-      
- 			layer.on('featureClick', function(e, latlng, pos, data) {
-				
-				var streetnum = data.street_num;
-        var streetname = data.street_nam;
-        var address = streetnum + " " + streetname;
-        var floorArea = data.floor_area;
-        var bldgHeight = data.height_roo;
-        var eui = data.source_eui;
-	    	var ghg = data.total_ghg / data.buildings;
-        var energyStar = data.energy_star;
-        var zip = data.zip;
-				
-				$('#building-address').html(address.toLowerCase());
-				
-				if (floorArea == null) {
-					$('#floor-area h4').html("--");	
-				} else {
-					$('#floor-area h4').html(numberWithCommas(floorArea));
-				}
-
-				if (bldgHeight == null) {
-					$('#building-height h4').html("--");
-				} else {
-					$('#building-height h4').html(numberWithCommas(Math.round(bldgHeight)));
-				}		
-
-				if (eui == null) {
-					$('#source-eui h4').html("--");
-				} else {
-					$('#source-eui h4').html(eui);
-				}
-
-				if (data.total_ghg == null || data.buildings == null) {
-					$('#ghg-emissions h4').html("--");	
-				} else {	
-					$('#ghg-emissions h4').html(ghg);	
-				} 
-
-				if (energyStar == 'Exempt') {
-					$('#energy-star h4').html('exempt');
-				} else if (energyStar == null) {			
-					$('#energy-star h4').html("--");
-				} else {
-					$('#energy-star h4').html(energyStar);	
-				}							
-
-			});
-      
-      layer.setInteraction(true);	  	        
-	  
-	  }
-
-
-// --------------------------------		
-// Add data layers using viz.json object and 'createLayer'
-		
-		var vizjson = 'https://iwsstuart.cartodb.com/api/v2/viz/3ba4fb98-3787-11e4-8355-0e10bcd91c2b/viz.json';
-	  cartodb.createLayer(map_object, vizjson).addTo(map_object) 
-		  .on('done', function(layer) {
-	      
-	      // Add buildings layer to sublayers array
-	      var sublayer = layer.getSubLayer(0);
-	      sublayers.push(sublayer);
-
-		  	activeQuery = sublayers[0].getSQL();
-
-	      geometryHover(map_object, layer.getSubLayer(0));
-
-	    })
-	    .on('error', function(err) {
-	      alert("Error: " + err);
-	    }); 
-
-
-	  // Set color scheme for buildings layer from control panel  
-  	$('.colors .list-group-item').click( function() {
-		  var colorScheme = $(this).attr('id');
-		  sublayers[0].set({
-		  	cartocss: $('#' + colorScheme).html()
-		  });  
-		});
-
-
-	  // Filter buildings displayed on map
-	  var typeFilter = false;
-	  var boroughFilter = false;
-
-	  // Filter buildings by type
-
-  	$('.type #multifamily').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (boroughFilter) {
-					sublayers[0].set({
-			  		sql: boroughQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				typeFilter = false;	  	
-		  } else if (boroughFilter) {
-				sublayers[0].set({
-			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Multifamily Housing'"
-			  });	  		
-	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Multifamily Housing'";			
-				typeFilter = true;
-			} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Multifamily Housing'"
-			  });  
-	  		typeQuery = sublayers[0].getSQL();
-				console.log(activeQuery);
-				typeFilter = true;
-			}
-		});
-
-		$('.type #office').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (boroughFilter) {
-					sublayers[0].set({
-			  		sql: boroughQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				typeFilter = false;	  	
-		  } else if (boroughFilter) {
-				sublayers[0].set({
-			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Office'"
-			  });	  		
-	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Office'";			
-				typeFilter = true;
-	  	} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t = 'Office'"
-			  });  
-	  		typeQuery = sublayers[0].getSQL();
-				console.log(activeQuery);
-				typeFilter = true;
-			}
-		});
-
-		$('.type #other').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (boroughFilter) {
-					sublayers[0].set({
-			  		sql: boroughQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				typeFilter = false;	  	
-		  } else if (boroughFilter) {
-				sublayers[0].set({
-			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t is not null and property_t != 'Multifamily Housing' and property_t != 'Office'"
-			  });	  		
-	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t is not null and property_t != 'Multifamily Housing' and property_t != 'Office'";
-				typeFilter = true;
-			} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t is not null and property_t != 'Multifamily Housing' and property_t != 'Office'"
-			  });  
-	  		typeQuery = sublayers[0].getSQL();
-				typeFilter = true;
-			}
-		});
-
-	 	$('.type #no-data').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (boroughFilter) {
-					sublayers[0].set({
-			  		sql: boroughQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				typeFilter = false;	  	
-		  } else if (boroughFilter) {
-				sublayers[0].set({
-			  	sql: boroughQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE property_t is null"
-			  });	  		
-	  		typeQuery = "SELECT * FROM building_0814_energy_3857 WHERE property_t is null";
-				typeFilter = true;
-			} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE property_t is null"
-			  });  
-	  		typeQuery = sublayers[0].getSQL();
-				typeFilter = true;
-			}
-		});
-
-
-	  // Filter by borough
-
-  	$('.borough #manhattan').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (typeFilter) {
-					sublayers[0].set({
-			  		sql: typeQuery
-			  	});
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}
-				boroughFilter = false;	  	
-		  } else if (typeFilter) {
-				sublayers[0].set({
-			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'MANHATTAN'"
-			  });	  		
-	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'MANHATTAN'"
-				boroughFilter = true;
-	  	} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'MANHATTAN'"
-			  });  
-	  		boroughQuery = sublayers[0].getSQL();
-				boroughFilter = true;
-			}
-		});
-
-		$('.borough #queens').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (typeFilter) {
-					sublayers[0].set({
-			  		sql: typeQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				boroughFilter = false;	  	
-		  } else if (typeFilter) {
-				sublayers[0].set({
-			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'QUEENS'"
-			  });	  		
-	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'QUEENS'"
-				boroughFilter = true;
-			} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'QUEENS'"
-			  });  
-	  		boroughQuery = sublayers[0].getSQL();
-				boroughFilter = true;
-			}
-		});
-
-		$('.borough #bronx').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (typeFilter) {
-					sublayers[0].set({
-			  		sql: typeQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				boroughFilter = false;	  	
-		  } else if (typeFilter) {
-				sublayers[0].set({
-			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'BRONX'"
-			  });	  		
-	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BRONX'"
-				boroughFilter = true;
-			} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BRONX'"
-			  });  
-	  		boroughQuery = sublayers[0].getSQL();
-				boroughFilter = true;
-			}
-		});
-
-	 	$('.borough #staten-island').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (typeFilter) {
-					sublayers[0].set({
-			  		sql: typeQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				boroughFilter = false;	  	
-		  } else if (typeFilter) {
-				sublayers[0].set({
-			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'STATEN ISLAND'"
-			  });	  		
-	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'STATEN ISLAND'"
-				boroughFilter = true;
-			} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'STATEN ISLAND'"
-			  });  
-	  		boroughQuery = sublayers[0].getSQL();
-				boroughFilter = true;
-			}
-		});
-
-		$('.borough #brooklyn').click( function() {
-		  if ($(this).hasClass('active')) {
-				if (typeFilter) {
-					sublayers[0].set({
-			  		sql: typeQuery
-			  	});	
-				} else {
-					sublayers[0].set({
-			  		sql: "SELECT * FROM building_0814_energy_3857"
-			  	});
-				}	  	
-				boroughFilter = false;	  	
-		  } else if (typeFilter) {
-				sublayers[0].set({
-			  	sql: typeQuery + " INTERSECT SELECT * FROM building_0814_energy_3857 WHERE borough = 'BROOKLYN'"
-			  });	  		
-	  		boroughQuery = "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BROOKLYN'"
-				boroughFilter = true;
-			} else { 	
-				sublayers[0].set({
-			  	sql: "SELECT * FROM building_0814_energy_3857 WHERE borough = 'BROOKLYN'"
-			  });  
-	  		boroughQuery = sublayers[0].getSQL();
-				boroughFilter = true;
-			}
-		});
-
-
-		// Toggle circle on and off
-		$('.list-group-item').click( function() {
-			if ($(this).hasClass('active')) {
-				$(this).children('span')
-					.toggleClass('fa-circle-thin')
-					.toggleClass('fa-circle');				
-			} else {
-				$(this).parent().children('.active')
-					.removeClass('active')
-					.children('span')
-						.toggleClass('fa-circle-thin')
-						.toggleClass('fa-circle');
-				$(this).children('span')
-					.toggleClass('fa-circle-thin')
-					.toggleClass('fa-circle');				
-			} 
-			$(this).toggleClass('active');
-		});
-
-// -------------------------------
-// Custom legend
-    
-    // var legend = new cdb.geo.ui.Legend({
-    //   type: "choropleth",
-    //   data: [
-    //     { value: "10" },
-    //     { value: "20" },
-    //     { name: "color1", value: "#F00" },
-    //     { name: "color2", value: "#0F0" },
-    //     { name: "color3", value: "#00F" }
-    //   ]
-    // });
-
-    // $('#map').append(legend.render().el);
-
-	
-
-// --------------------------------	
-// One way to introduce interactive styling
-
-		var bldgLayerActions = {
-
-		  ghg: function(){
-		    sublayers[0].set({
-		    	cartocss: "#building_0814_energy_3857 [ total_ghg <= 9383283.01] { polygon-fill: #91003F; }\
-							#building_0814_energy_3857 [ total_ghg <= 2334.88] { polygon-fill: #CE1256; }\
-							#building_0814_energy_3857 [ total_ghg <= 1240.7] { polygon-fill: #E7298A; }\
-							#building_0814_energy_3857 [ total_ghg <= 808.62] { polygon-fill: #DF65B0; }\
-							#building_0814_energy_3857 [ total_ghg <= 587.96] { polygon-fill: #C994C7; }\
-							#building_0814_energy_3857 [ total_ghg <= 444.26] { polygon-fill: #D4B9DA; }\
-							#building_0814_energy_3857 [ total_ghg <= 318.97] { polygon-fill: #F1EEF6; }"
-		    });
-		    return true;
-		  },
-		  eui: function(){
-		    sublayers[0].set({
-		    	cartocss: "#building_0814_energy_3857 [ source_eui <= 576072] { polygon-fill: #91003F; }\
-							#building_0814_energy_3857 [ source_eui <= 303.5] { polygon-fill: #CE1256; }\
-							#building_0814_energy_3857 [ source_eui <= 227.7] { polygon-fill: #E7298A; }\
-							#building_0814_energy_3857 [ source_eui <= 183.8] { polygon-fill: #DF65B0; }\
-							#building_0814_energy_3857 [ source_eui <= 148.4] { polygon-fill: #C994C7; }\
-							#building_0814_energy_3857 [ source_eui <= 115.4] { polygon-fill: #D4B9DA; }\
-							#building_0814_energy_3857 [ source_eui <= 80.7] { polygon-fill: #F1EEF6; }"
-		    });
-		    return true;
-		  }
-		
-		}
-
-		$('.button').click( function() {
-		  $('.button').removeClass('selected');
-		  $(this).addClass('selected');
-		  bldgLayerActions[$(this).attr('id')]();
-		});
-
-	
-// --------------------------------
-
-
-		}
-    </script>
+    <script src="js/main.js"></script>
 
   </body>
 </html>
